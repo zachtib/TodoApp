@@ -6,6 +6,7 @@ from .models import Task, TaskList, Sharing
 class SharingInline(admin.TabularInline):
     model = Sharing
 
+
 class TaskInline(admin.TabularInline):
     model = Task
 
