@@ -9,7 +9,9 @@ class TaskListViewSet(viewsets.ModelViewSet):
     serializer_class = TaskListSerializer
 
     def get_queryset(self):
-        return TaskList.get_allowed_for_user(self.request.user)
+        return TaskList.get_allowed_for_user(self.request.user) \
+            .prefetch_related('owner') \
+            .prefetch_related('tasks__created_by')
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -18,4 +20,5 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         allowed_lists = TaskList.get_allowed_for_user(self.request.user)
-        return Task.objects.filter(tasklist__in=allowed_lists.values_list('id'))
+        return Task.objects.filter(tasklist__in=allowed_lists.values_list('id')) \
+            .prefetch_related('created_by')
