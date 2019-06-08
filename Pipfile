@@ -9,6 +9,7 @@ pylint-django = "*"
 autopep8 = "*"
 coverage = "*"
 django-debug-toolbar = "*"
+rope = "*"
 
 [packages]
 django = "~=2.2"
