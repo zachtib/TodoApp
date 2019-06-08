@@ -1,3 +1,14 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Task, TaskList
+
+
+class TaskInline(admin.TabularInline):
+    model = Task
+
+
+@admin.register(TaskList)
+class TaskListAdmin(admin.ModelAdmin):
+    inlines = [
+        TaskInline,
+    ]
