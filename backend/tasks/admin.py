@@ -1,7 +1,10 @@
 from django.contrib import admin
 
-from .models import Task, TaskList
+from .models import Task, TaskList, Sharing
 
+
+class SharingInline(admin.TabularInline):
+    model = Sharing
 
 class TaskInline(admin.TabularInline):
     model = Task
@@ -11,4 +14,5 @@ class TaskInline(admin.TabularInline):
 class TaskListAdmin(admin.ModelAdmin):
     inlines = [
         TaskInline,
+        SharingInline,
     ]
