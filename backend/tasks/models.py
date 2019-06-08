@@ -40,5 +40,6 @@ class Task(TimestampedModel):
 
 
 class Sharing(TimestampedModel):
+    uuid = models.UUIDField(default=uuid.uuid4, db_index=True, editable=False)
     tasklist = models.ForeignKey(TaskList, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

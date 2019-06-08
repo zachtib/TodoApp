@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from .serializers import TaskListSerializer, TaskSerializer
+from .serializers import TaskListSerializer, TaskSerializer, SharingSerializer
 
-from .models import TaskList, Task
+from .models import TaskList, Task, Sharing
 
 
 class TaskListViewSet(viewsets.ModelViewSet):
@@ -22,3 +22,12 @@ class TaskViewSet(viewsets.ModelViewSet):
         allowed_lists = TaskList.get_allowed_for_user(self.request.user)
         return Task.objects.filter(tasklist__in=allowed_lists.values_list('id')) \
             .prefetch_related('created_by')
+
+
+class SharingViewSet(viewsets.ModelViewSet):
+    lookup_field = 'uuid'
+    serializer_class = SharingSerializer
+
+    def get_queryset(self):
+        owned_lists = TaskList.objects.filter(owner=self.request.user)
+        return Sharing.objects.filter(tasklist__in=owned_lists)

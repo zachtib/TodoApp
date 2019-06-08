@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import TaskList, Task
+from .models import TaskList, Task, Sharing
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -28,4 +28,22 @@ class TaskListSerializer(serializers.ModelSerializer):
             'owner',
             'name',
             'tasks',
+        )
+
+
+class SharingSerializer(serializers.ModelSerializer):
+    tasklist = serializers.SlugRelatedField(read_only=True, slug_field='uuid')
+    user = serializers.SlugRelatedField(read_only=True, slug_field='username')
+    display_name = serializers.SerializerMethodField()
+
+    def get_display_name(self, obj):
+        return obj.tasklist.name
+
+    class Meta:
+        model = Sharing
+        fields = (
+            'uuid',
+            'display_name',
+            'tasklist',
+            'user',
         )

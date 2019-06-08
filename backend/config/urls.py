@@ -24,6 +24,7 @@ from tasks import views
 router = routers.DefaultRouter()
 router.register(r'lists', views.TaskListViewSet, basename='list')
 router.register(r'tasks', views.TaskViewSet, basename='task')
+router.register(r'shares', views.SharingViewSet, basename='share')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
