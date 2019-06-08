@@ -19,8 +19,9 @@ class TaskList(TimestampedModel):
 
     @staticmethod
     def get_allowed_for_user(user):
-        return TaskList.objects.filter(owner=user) \
-            .union(TaskList.objects.filter(shared_with__in=[user]))
+        owned_lists = TaskList.objects.filter(owner=user)
+        shared_lists = TaskList.objects.filter(shared_with__in=[user])
+        return (owned_lists | shared_lists).distinct()
 
     def __str__(self):
         return self.name
