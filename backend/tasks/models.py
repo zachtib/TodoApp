@@ -17,6 +17,11 @@ class TaskList(TimestampedModel):
         related_name='shared_lists',
     )
 
+    @staticmethod
+    def get_allowed_for_user(user):
+        return TaskList.objects.filter(owner=user) \
+            .union(TaskList.objects.filter(shared_with__in=[user]))
+
     def __str__(self):
         return self.name
 
@@ -32,6 +37,7 @@ class Task(TimestampedModel):
 
     def __str__(self):
         return self.description
+
 
 class Sharing(TimestampedModel):
     tasklist = models.ForeignKey(TaskList, on_delete=models.CASCADE)
